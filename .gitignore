@@ -1,0 +1,10 @@
+# Idea
+**/.idea/*
+**/*.iml
+# logs
+**/*.log
+# Mac OS
+**/.DS_STORE
+# mvn
+**/target/**
+
