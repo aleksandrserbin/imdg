@@ -1,6 +1,7 @@
 package com.imdg.core
 
 import akka.actor.{ActorSystem, Props}
+import com.imdg.core.store.StoreActor
 import com.imdg.core.tcp.{TCPHandler, TCPInterface}
 
 /**
@@ -11,7 +12,13 @@ object Launcher {
 
   def main(args: Array[String]): Unit = {
     val system = ActorSystem("System")
-    val actor = system.actorOf(Props[TCPInterface])
+
+    ActorService.system = system
+    val store = ActorService.store
+    //val store = system.actorOf(Props(classOf[StoreActor], 10))
+
+    val tcpInterface = system.actorOf(Props[TCPInterface])
+
     println("Launched instance")
   }
 

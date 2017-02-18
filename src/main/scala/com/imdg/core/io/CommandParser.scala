@@ -1,7 +1,6 @@
 package com.imdg.core.io
 
 import akka.util.ByteString
-import Command
 import com.imdg.core.tcp.TCPCommand
 
 /**

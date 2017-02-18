@@ -7,11 +7,12 @@ import akka.util.ByteString
   */
 class PlainString(value: String) extends ValueObject {
 
-  override def toByteString(): ByteString = {
+  override def toByteString: ByteString = {
     if (value == null) {
       ByteString("\n")
+    } else {
+      ByteString(value + "\n")
     }
-    ByteString(value + "\n")
   }
 
 }

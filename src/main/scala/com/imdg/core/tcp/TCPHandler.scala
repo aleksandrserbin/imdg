@@ -12,7 +12,7 @@ import com.imdg.core.exception.WrongCommandFormat
 import com.imdg.core.executor.{AddExecutor, GetExecutor, PurgeExecutor, PutExecutor}
 import com.imdg.core.io.CommandParser
 import com.imdg.core.tcp.TCPInterfaceProtocol.Exec
-
+import com.imdg.core.store.values.ValueObject
 import scala.collection.mutable.ArrayBuffer
 
 /**

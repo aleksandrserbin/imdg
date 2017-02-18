@@ -1,6 +1,5 @@
 package com.imdg.core.store
 
-import com.imdg.core.ValueObject
 import com.imdg.core.store.values.{PlainString, ValueObject}
 
 import scala.collection.mutable.Map
