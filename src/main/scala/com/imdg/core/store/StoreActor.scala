@@ -3,6 +3,7 @@ package com.imdg.core.store
 import akka.actor.Actor.Receive
 import akka.actor.SupervisorStrategy.Resume
 import akka.actor.{Actor, ActorLogging, ActorRef, OneForOneStrategy, Props, SupervisorStrategy}
+import com.imdg.core.configuration.Configuration
 import com.imdg.core.store.StoreProtocol.Get
 import com.imdg.core.store.StoreProtocol.Put
 
@@ -42,5 +43,6 @@ class StoreActor(numberOfBuckets: Int) extends Actor with ActorLogging {
   def calculateIndex(key: Integer) : Integer = {
     math.abs(key % buckets.length)
   }
+
 
 }

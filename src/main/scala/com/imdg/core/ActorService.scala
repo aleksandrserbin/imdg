@@ -1,6 +1,7 @@
 package com.imdg.core
 
 import akka.actor.{ActorSystem, Props}
+import com.imdg.core.configuration.Configuration
 import com.imdg.core.store.StoreActor
 
 /**
@@ -11,6 +12,6 @@ object ActorService {
 
   var system : ActorSystem = _
 
-  lazy val store = system.actorOf(Props(classOf[StoreActor], 10))
+  lazy val store = system.actorOf(Props(classOf[StoreActor], Configuration.numberOfBuckets))
 
 }

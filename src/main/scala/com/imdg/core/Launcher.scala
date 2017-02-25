@@ -1,6 +1,7 @@
 package com.imdg.core
 
 import akka.actor.{ActorSystem, Props}
+import com.imdg.core.configuration.YamlConfigurationSource
 import com.imdg.core.store.StoreActor
 import com.imdg.core.tcp.{TCPHandler, TCPInterface}
 
@@ -11,11 +12,14 @@ import com.imdg.core.tcp.{TCPHandler, TCPInterface}
 object Launcher {
 
   def main(args: Array[String]): Unit = {
+
+    val configSource = new YamlConfigurationSource()
+    configSource.initConfig()
+
     val system = ActorSystem("System")
 
     ActorService.system = system
     val store = ActorService.store
-    //val store = system.actorOf(Props(classOf[StoreActor], 10))
 
     val tcpInterface = system.actorOf(Props[TCPInterface])
 

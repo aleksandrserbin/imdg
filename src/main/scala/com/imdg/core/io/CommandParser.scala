@@ -31,12 +31,12 @@ class CommandParser() {
       value = value substring(1, value.length() - 1) trim()
       value = value replace("\\\"", "\"")
 
-      Command(TCPCommand.valueOf(processed(0) toUpperCase).orNull, value, processed tail)
+      Command(TCPCommand.valOf(processed(0) toUpperCase).orNull, value, processed tail)
 
     } else {
 
       val parsed = stringRepresentation.split(" ")
-      Command(TCPCommand.valueOf(parsed(0) toUpperCase).orNull, parsed last, parsed.slice(1, parsed.length - 1))
+      Command(TCPCommand.valOf(parsed(0) toUpperCase).orNull, parsed last, parsed.slice(1, parsed.length - 1))
 
     }
 

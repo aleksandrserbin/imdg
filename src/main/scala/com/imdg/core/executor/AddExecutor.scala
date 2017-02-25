@@ -13,7 +13,8 @@ import com.imdg.core.tcp.TCPInterfaceProtocol.Exec
   * Acceptable syntax is: ADD KEY VALUE
   * If this key already exists, it will not be overwritten
   */
-class AddExecutor(connection: ActorRef) extends Actor with ActorLogging {
+class AddExecutor(connection: ActorRef) extends Actor
+  with ActorLogging {
 
   override def receive: Receive = {
 
@@ -37,5 +38,6 @@ class AddExecutor(connection: ActorRef) extends Actor with ActorLogging {
     }
 
   }
+
 
 }

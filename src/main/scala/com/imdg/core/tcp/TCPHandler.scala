@@ -8,11 +8,13 @@ import akka.actor.Actor.Receive
 import akka.actor.SupervisorStrategy.Stop
 import akka.io.Tcp._
 import akka.util.ByteString
+import com.imdg.core.configuration.Configuration
 import com.imdg.core.exception.WrongCommandFormat
-import com.imdg.core.executor.{AddExecutor, GetExecutor, PurgeExecutor, PutExecutor}
+import com.imdg.core.executor._
 import com.imdg.core.io.CommandParser
 import com.imdg.core.tcp.TCPInterfaceProtocol.Exec
 import com.imdg.core.store.values.ValueObject
+
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -35,25 +37,38 @@ class TCPHandler(connection: ActorRef, remote: InetSocketAddress) extends Actor
       val cmd = command.command
       var executor : ActorRef = null
 
-      cmd match {
+      if (!cmd.permitted(Configuration.role)) {
 
-        case TCPCommand.PUT => executor =
-          context.actorOf(Props(classOf[PutExecutor], connection))
+        connection ! Write(ByteString("Not a master node\n"))
+        log.warning("Attempt to perform {} action on {} node", cmd.toString, Configuration.role)
 
-        case TCPCommand.GET => executor =
-          context.actorOf(Props(classOf[GetExecutor], connection))
+      } else {
 
-        case TCPCommand.PURGE => executor =
-          context.actorOf(Props(classOf[PurgeExecutor], connection))
+        cmd match {
 
-        case TCPCommand.ADD => executor =
-          context.actorOf(Props(classOf[AddExecutor], connection))
+          case TCPCommand.PUT => executor =
+            context.actorOf(Props(classOf[PutExecutor], connection))
 
-        case _ => sender ! Write(ByteString("Unknown command\n"))
+          case TCPCommand.GET => executor =
+            context.actorOf(Props(classOf[GetExecutor], connection))
+
+          case TCPCommand.PURGE => executor =
+            context.actorOf(Props(classOf[PurgeExecutor], connection))
+
+          case TCPCommand.ADD => executor =
+            context.actorOf(Props(classOf[AddExecutor], connection))
+
+          case TCPCommand.INFO => executor =
+            context.actorOf(Props(classOf[InfoExecutor], connection))
+
+          case _ => sender ! Write(ByteString("Unknown command\n"))
+        }
+
+        connection ! Register(executor, keepOpenOnPeerClosed = true)
+        executor ! Exec(command.rest, command.value)
+
       }
 
-      connection ! Register(executor, keepOpenOnPeerClosed = true)
-      executor ! Exec(command.rest, command.value)
 
     }
 
